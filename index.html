@@ -170,19 +170,22 @@
     opacity: 0.8;
   }
   .video-wrapper {
-    width: 100%;
-    max-width: 800px;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 5px solid var(--yellow);
-    box-shadow: 0 0 0 8px var(--black), 0 0 0 12px var(--yellow);
-    margin: 0 auto;
-    position: relative;
-  }
-  .video-wrapper video {
-    width: 100%;
-    display: block;
-  }
+  width: min(90vw, 540px);
+  aspect-ratio: 9 / 16; /* 1080x1920 */
+  border-radius: 16px;
+  overflow: hidden;
+  border: 5px solid var(--yellow);
+  box-shadow: 0 0 0 8px var(--black), 0 0 0 12px var(--yellow);
+  margin: 0 auto;
+  position: relative;
+}
+
+.video-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
   .video-label {
     position: absolute;
     top: -15px; left: 50%;
@@ -873,20 +876,18 @@
 </section>
 
 <!-- ==================== VIDEO 1 ==================== -->
-<section id="intro-video" style="background:#1a1a2e;color:white;">
-  <div class="slide-badge">🎬 INTRO</div>
-  <div class="section-title" style="color:var(--yellow)">PEHLE YEH DEKH! 👀</div>
-  <div class="section-sub">Seriously. Watch. First.</div>
+<div class="video-wrapper reveal" style="position:relative;margin-top:20px;max-width:420px;margin-left:auto;margin-right:auto;">
+  <div class="video-label">🎬 Intro Video — Dekh Bhai</div>
 
-  <div class="video-wrapper reveal" style="position:relative;margin-top:20px;">
-    <div class="video-label">🎬 Intro Video — Dekh Bhai</div>
-    <video controls autoplay muted loop playsinline>
-      <source src="Gorgeous_Kitchen_Organization_Hacks_on_a_Budget_-_Pin-3940718419398697.mp4" type="video/mp4">
-      Your browser doesn't support video. Koi baat nahi, imagination use kar. 😂
-    </video>
-  </div>
-</section>
+  <video controls autoplay muted loop playsinline
+         style="width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:16px;">
 
+    <source src="https://raw.githubusercontent.com/emilyaria766-maker/Presentation-new/main/Gorgeous%20Kitchen%20Organization%20Hacks%20on%20a%20Budget%20-%20Pin-3940718419398697.mp4"
+            type="video/mp4">
+
+    Your browser doesn't support video.
+  </video>
+</div>
 <!-- SORRY DIVIDER -->
 <div class="sorry-divider">
   <span class="sorry-text">SORRY! SORRY! SORRY!</span>
