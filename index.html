@@ -895,7 +895,7 @@ transition:opacity .6s;
   <div class="video-slide-header">🎬 INTRO VIDEO</div>
   <div class="video-slide-header">🎬 REAL INTRO</div>
   <!-- FULLSCREEN BACKGROUND VIDEO -->
-  <video id="introVideo" loop playsinline preload="auto" autoplay
+  <video id="introVideo" loop playsinline preload="auto"
     style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;">
     <source src="https://raw.githubusercontent.com/emilyaria766-maker/Presentation-new/main/Gorgeous%20Kitchen%20Organization%20Hacks%20on%20a%20Budget%20-%20Pin-3940718419398697.mp4" type="video/mp4">
   </video>
@@ -918,7 +918,7 @@ transition:opacity .6s;
 <!-- ==================== VIDEO 2 ==================== -->
 <section style="position:relative;overflow:hidden;background:#000;color:white;text-align:center;padding:0;min-height:100vh;display:flex;align-items:center;justify-content:center;">
   <!-- FULLSCREEN BACKGROUND VIDEO -->
-  <video loop playsinline autoplay
+  <video loop playsinline
     style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;">
     <source src="https://github.com/emilyaria766-maker/Presentation-new/raw/main/Need%20fresh%20inspiration_%20Pin%20these%20cozy%20reading%20nook%20ideas%20that%20feel%20luxe%20without%20spending%20a%20fortune%20with%20aesthetic%20touches%20that%20photograph%20-%20Pin-819021882249261814.mp4"
             type="video/mp4">
@@ -1394,5 +1394,46 @@ document.querySelectorAll("section").forEach(sec=>{
  io.observe(sec);
 });
 </script>
+
+<script>
+const observer=new IntersectionObserver((entries)=>{
+ entries.forEach(entry=>{
+  const sec=entry.target;
+  const v=sec.querySelector("video");
+  const h=sec.querySelector(".video-slide-header");
+  if(!v)return;
+  if(entry.isIntersecting && entry.intersectionRatio>0.65){
+    document.querySelectorAll("video").forEach(o=>{
+      if(o!==v){o.pause();o.currentTime=0;}
+    });
+    v.muted=false;
+    v.currentTime=0;
+    v.play().catch(()=>{});
+    if(h){
+      h.style.opacity=1;
+      clearTimeout(h.timer);
+      h.timer=setTimeout(()=>h.style.opacity=0,5000);
+    }
+  }else{
+    v.pause();
+    v.currentTime=0;
+    if(h){
+      clearTimeout(h.timer);
+      h.style.opacity=1;
+    }
+  }
+ });
+},{threshold:[0.65]});
+document.querySelectorAll("section").forEach(s=>{
+ if(s.querySelector("video"))observer.observe(s);
+});
+window.addEventListener("load",()=>{
+ document.querySelectorAll("video").forEach(v=>{
+  v.pause();
+  v.currentTime=0;
+ });
+});
+</script>
 </body>
+
 </html>
