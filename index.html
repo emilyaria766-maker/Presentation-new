@@ -1434,6 +1434,58 @@ window.addEventListener("load",()=>{
  });
 });
 </script>
+
+<script>
+let activeVideo=null;
+function handle(){
+ const vids=document.querySelectorAll("section video");
+ vids.forEach(v=>{
+   const sec=v.closest("section");
+   const rect=sec.getBoundingClientRect();
+   const visible=Math.min(rect.bottom,window.innerHeight)-Math.max(rect.top,0);
+   const ratio=visible/Math.min(window.innerHeight,rect.height);
+   const header=sec.querySelector(".video-slide-header");
+   if(ratio>0.7){
+      if(activeVideo!==v){
+         if(activeVideo){
+           activeVideo.pause();
+           activeVideo.currentTime=0;
+         }
+         activeVideo=v;
+         v.currentTime=0;
+         v.play().catch(()=>{});
+         if(header){
+           header.style.opacity=1;
+           clearTimeout(header.t);
+           header.t=setTimeout(()=>header.style.opacity=0,5000);
+         }
+      }
+   }else{
+      if(activeVideo===v){
+        v.pause();
+        v.currentTime=0;
+        activeVideo=null;
+      }else{
+        v.pause();
+      }
+      if(header){
+        clearTimeout(header.t);
+        header.style.opacity=1;
+      }
+   }
+ });
+}
+window.addEventListener("scroll",handle,{passive:true});
+window.addEventListener("resize",handle);
+window.addEventListener("load",()=>{
+ document.querySelectorAll("video").forEach(v=>{
+   v.pause();
+   v.currentTime=0;
+ });
+ handle();
+});
+</script>
 </body>
+
 
 </html>
