@@ -836,6 +836,21 @@
     .steps-row { gap: 10px; }
     .step-item { flex: 0 0 130px; }
   }
+
+.video-slide-header{
+position:absolute;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+z-index:5;
+background:rgba(0,0,0,.65);
+color:#fff;
+padding:12px 24px;
+border-radius:10px;
+font-weight:bold;
+transition:opacity .6s;
+}
+
 </style>
 </head>
 <body>
@@ -876,13 +891,22 @@
 </section>
 
 <!-- ==================== VIDEO 1 ==================== -->
-<div class="video-wrapper reveal">
-  <div class="video-label">🎬 Intro Video — Dekh Bhai</div>
-
-  <video id="introVideo" autoplay muted loop playsinline preload="auto">
+<section id="intro-video" style="position:relative;overflow:hidden;background:#000;color:white;text-align:center;padding:0;min-height:100vh;display:flex;align-items:center;justify-content:center;">
+  <div class="video-slide-header">🎬 INTRO VIDEO</div>
+  <div class="video-slide-header">🎬 REAL INTRO</div>
+  <!-- FULLSCREEN BACKGROUND VIDEO -->
+  <video id="introVideo" loop playsinline preload="auto" autoplay
+    style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;">
     <source src="https://raw.githubusercontent.com/emilyaria766-maker/Presentation-new/main/Gorgeous%20Kitchen%20Organization%20Hacks%20on%20a%20Budget%20-%20Pin-3940718419398697.mp4" type="video/mp4">
   </video>
-</div>
+  <!-- Dark overlay so text is readable -->
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);z-index:1;"></div>
+  <!-- Content on top -->
+  <div style="position:relative;z-index:2;padding:40px 20px;">
+    <div class="slide-badge" style="position:static;margin-bottom:16px;display:inline-block;">🎬 INTRO VIDEO</div>
+    <div class="section-title" style="color:var(--yellow)">🎬 Intro Video — Dekh Bhai</div>
+  </div>
+</section>
 
 <!-- SORRY DIVIDER -->
 <div class="sorry-divider">
@@ -892,22 +916,22 @@
 </div>
 
 <!-- ==================== VIDEO 2 ==================== -->
-<section style="background:#0d0d1a;color:white;text-align:center;">
-  <div class="slide-badge">🎬 REAL INTRO</div>
-  <div class="section-title" style="color:var(--yellow)">OKAY OKAY — </div>
-  <div class="section-sub">Ab yeh wala dekh — promise karte ho Sahi krta ho</div>
-
-  <div class="video-wrapper reveal" style="position:relative;margin-top:20px;">
-    <div class="video-label">✅ Actual Real Intro — Final Answer</div>
-
-    <video autoplay muted loop playsinline
-           style="width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:16px;">
-      <source src="https://github.com/emilyaria766-maker/Presentation-new/raw/main/Need%20fresh%20inspiration_%20Pin%20these%20cozy%20reading%20nook%20ideas%20that%20feel%20luxe%20without%20spending%20a%20fortune%20with%20aesthetic%20touches%20that%20photograph%20-%20Pin-819021882249261814.mp4"
-              type="video/mp4">
-    </video>
-
+<section style="position:relative;overflow:hidden;background:#000;color:white;text-align:center;padding:0;min-height:100vh;display:flex;align-items:center;justify-content:center;">
+  <!-- FULLSCREEN BACKGROUND VIDEO -->
+  <video loop playsinline autoplay
+    style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+    <source src="https://github.com/emilyaria766-maker/Presentation-new/raw/main/Need%20fresh%20inspiration_%20Pin%20these%20cozy%20reading%20nook%20ideas%20that%20feel%20luxe%20without%20spending%20a%20fortune%20with%20aesthetic%20touches%20that%20photograph%20-%20Pin-819021882249261814.mp4"
+            type="video/mp4">
+  </video>
+  <!-- Dark overlay -->
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);z-index:1;"></div>
+  <!-- Content on top -->
+  <div style="position:relative;z-index:2;padding:40px 20px;">
+    <div class="slide-badge" style="position:static;margin-bottom:16px;display:inline-block;">🎬 REAL INTRO</div>
+    <div class="section-title" style="color:var(--yellow)">OKAY OKAY —</div>
+    <div class="section-sub">Ab yeh wala dekh — promise karte ho Sahi krta ho</div>
+    <div class="video-label" style="position:static;transform:none;margin-top:16px;display:inline-block;">✅ Actual Real Intro — Final Answer</div>
   </div>
-</section>
 </section>
 
 <!-- ==================== TEAM ==================== -->
@@ -1339,6 +1363,36 @@
     }
     if (k.length > 20) k = [];
   });
+</script>
+
+<script>
+document.querySelectorAll("section").forEach(sec=>{
+ const v=sec.querySelector("video");
+ const h=sec.querySelector(".video-slide-header");
+ if(!v||!h) return;
+ let shown=false;
+ const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+   if(e.isIntersecting){
+    v.currentTime=0;
+    v.play().catch(()=>{});
+    v.muted=false;
+    h.style.opacity=1;
+    if(!shown){
+      shown=true;
+      setTimeout(()=>h.style.opacity=0,5000);
+    }
+   }else{
+    v.pause();
+    v.currentTime=0;
+    v.muted=true;
+    shown=false;
+    h.style.opacity=1;
+   }
+  });
+ },{threshold:.6});
+ io.observe(sec);
+});
 </script>
 </body>
 </html>
